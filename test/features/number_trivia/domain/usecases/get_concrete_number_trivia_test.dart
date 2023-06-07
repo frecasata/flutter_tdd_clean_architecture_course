@@ -3,36 +3,37 @@ import 'package:flutter_tdd_clean_architecture_course/features/number_trivia/dom
 import 'package:flutter_tdd_clean_architecture_course/features/number_trivia/domain/repositories/number_trivia_repository.dart';
 import 'package:flutter_tdd_clean_architecture_course/features/number_trivia/domain/usecases/get_concrete_number_trivia.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-class MockNumberTriviaRepository extends Mock
-    implements NumberTriviaRepository {}
+import 'get_concrete_number_trivia_test.mocks.dart';
 
+@GenerateMocks([NumberTriviaRepository])
 void main() {
-  GetConcreteNumberTrivia usecase;
-  MockNumberTriviaRepository mockNumberTriviaRepository;
+  late MockNumberTriviaRepository mockNumberTriviaRepository;
+  late GetConcreteNumberTrivia usecase;
+  late int tNumber;
+  late NumberTrivia tNumberTrivia;
 
-  final tNumber = 1;
-  final tNumberTrivia = NumberTrivia(number: 1, text: 'test');
+  setUp(() {
+    mockNumberTriviaRepository = MockNumberTriviaRepository();
+    usecase = GetConcreteNumberTrivia(mockNumberTriviaRepository);
+    tNumberTrivia = NumberTrivia(number: 1, text: 'test');
+    tNumber = 1;
+  });
 
   test(
     'should get trivia for the number from the repository',
     () async {
-      mockNumberTriviaRepository = MockNumberTriviaRepository();
-      usecase = GetConcreteNumberTrivia(mockNumberTriviaRepository);
+      //arange
 
-      // "On the fly" implementation of the Repository using the Mockito package.
-      // When getConcreteNumberTrivia is called with any argument, always answer with
-      // the Right "side" of Either containing a test NumberTrivia object.
-      when(mockNumberTriviaRepository.getConcreteNumberTrivia(1))
+      when(mockNumberTriviaRepository.getConcreteNumberTrivia(tNumber))
           .thenAnswer((_) async => Right(tNumberTrivia));
-      // The "act" phase of the test. Call the not-yet-existent method.
+      //act
       final result = await usecase.execute(number: tNumber);
-      // UseCase should simply return whatever was returned from the Repository
-      expect(result, Right(tNumberTrivia));
-      // Verify that the method has been called on the Repository
+      //assert
+      expect(result, equals(Right(tNumberTrivia)));
       verify(mockNumberTriviaRepository.getConcreteNumberTrivia(tNumber));
-      // Only the above method should be called and nothing more.
       verifyNoMoreInteractions(mockNumberTriviaRepository);
     },
   );
