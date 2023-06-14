@@ -1,10 +1,10 @@
-import 'package:flutter_tdd_clean_architecture_course/core/platform/network_info.dart';
-import 'package:flutter_tdd_clean_architecture_course/features/number_trivia/data/datasources/number_trivia_local_data_source.dart';
-import 'package:flutter_tdd_clean_architecture_course/features/number_trivia/data/datasources/number_trivia_remote_data_source.dart';
-import 'package:flutter_tdd_clean_architecture_course/features/number_trivia/domain/entities/number_trivia.dart';
-import 'package:flutter_tdd_clean_architecture_course/core/error/failures.dart';
+import '../../../../core/platform/network_info.dart';
+import '../datasources/number_trivia_local_data_source.dart';
+import '../datasources/number_trivia_remote_data_source.dart';
+import '../../domain/entities/number_trivia.dart';
+import '../../../../core/error/failures.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter_tdd_clean_architecture_course/features/number_trivia/domain/repositories/number_trivia_repository.dart';
+import '../../domain/repositories/number_trivia_repository.dart';
 
 class NumberTriviaRepositoryImpl implements NumberTriviaRepository {
   final NumberTriviaRemoteDataSource remoteDataSource;
